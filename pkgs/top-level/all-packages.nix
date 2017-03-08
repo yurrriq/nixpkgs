@@ -15305,6 +15305,8 @@ with pkgs;
     themes = [];  # extra themes, etc.
   };
 
+  skim = callPackage ../applications/misc/skim { };
+
   skrooge = libsForQt5.callPackage ../applications/office/skrooge {};
 
   slim = callPackage ../applications/display-managers/slim {
