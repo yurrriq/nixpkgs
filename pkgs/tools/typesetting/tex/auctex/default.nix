@@ -1,7 +1,7 @@
 { stdenv, fetchurl, emacs, texlive, ghostscript }:
  
 let auctex = stdenv.mkDerivation ( rec {
-  version = "11.89";
+  version = "11.90";
   name = "${pname}-${version}";
 
   # Make this a valid tex(live-new) package;
@@ -12,14 +12,9 @@ let auctex = stdenv.mkDerivation ( rec {
 
   outputs = [ "out" "tex" ];
 
-  meta = {
-    description = "Extensible package for writing and formatting TeX files in GNU Emacs and XEmacs";
-    homepage = http://www.gnu.org/software/auctex;
-  };
-
   src = fetchurl {
     url = "mirror://gnu/${pname}/${name}.tar.gz";
-    sha256 = "1cf9fkkmzjxa4jvk6c01zgxdikr4zzb5pcx8i4r0hwdk0xljkbwq";
+    sha256 = "13zimbyar3159arrcklmnmjxjvibrjpkac6d53mfv03pwpc2y8rw";
   };
 
   buildInputs = [ emacs texlive.combined.scheme-basic ghostscript ];
@@ -32,6 +27,12 @@ let auctex = stdenv.mkDerivation ( rec {
     "--with-lispdir=\${out}/share/emacs/site-lisp"
     "--with-texmf-dir=\${tex}"
   ];
+
+  meta = {
+    description = "Extensible package for writing and formatting TeX files in GNU Emacs and XEmacs";
+    homepage = http://www.gnu.org/software/auctex;
+    platforms = stdenv.lib.platforms.unix;
+  };
 });
 
 in auctex // { pkgs = [ auctex.tex ]; }

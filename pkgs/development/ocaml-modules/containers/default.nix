@@ -1,12 +1,12 @@
-{ stdenv, fetchFromGitHub, ocaml, findlib, cppo, gen, sequence, qtest, ounit, ocaml_oasis, result }:
+{ stdenv, fetchFromGitHub, ocaml, findlib, ocamlbuild, cppo, gen, sequence, qtest, ounit, ocaml_oasis, result
+, qcheck }:
 
 let
 
   mkpath = p:
-    let v = stdenv.lib.getVersion ocaml; in
-      "${p}/lib/ocaml/${v}/site-lib";
+      "${p}/lib/ocaml/${ocaml.version}/site-lib";
 
-  version = "0.16";
+  version = "0.22";
 
 in
 
@@ -17,10 +17,10 @@ stdenv.mkDerivation {
     owner = "c-cube";
     repo = "ocaml-containers";
     rev = "${version}";
-    sha256 = "1mc33b4nvn9k3r4k56amxr804bg5ndhxv92cmjzg5pf4qh220c2h";
+    sha256 = "1kbf865z484z9nxskmg150xhfspikkvsxk0wbry5vvczqr63cwhq";
   };
 
-  buildInputs = [ ocaml findlib cppo gen sequence qtest ounit ocaml_oasis ];
+  buildInputs = [ ocaml findlib ocamlbuild cppo gen sequence qtest ounit ocaml_oasis qcheck ];
 
   propagatedBuildInputs = [ result ];
 

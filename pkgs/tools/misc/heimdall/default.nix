@@ -1,6 +1,6 @@
 { stdenv, fetchFromGitHub, zlib, libusb1, cmake, qt5, enableGUI ? false }:
 
-let version = "1.4.1-34-g7ebee1e"; in
+let version = "1.4.1-37-gb6fe7f8"; in
 
 stdenv.mkDerivation {
   name = "heimdall-${version}";
@@ -13,20 +13,22 @@ stdenv.mkDerivation {
   };
 
   buildInputs = [ zlib libusb1 cmake ];
-  patchPhase = stdenv.lib.optional (!enableGUI) ''
-    sed -i '/heimdall-frontend/d' CMakeLists.txt
-  '';
-  enableParallelBuilding = true;
+
   cmakeFlags = [
+    "-DBUILD_TYPE=Release"
+    "-DDISABLE_FRONTEND=${if enableGUI then "OFF" else "ON"}"
+  ] ++ stdenv.lib.optionals enableGUI [
     "-DQt5Widgets_DIR=${qt5.qtbase.dev}/lib/cmake/Qt5Widgets"
     "-DQt5Gui_DIR=${qt5.qtbase.dev}/lib/cmake/Qt5Gui"
     "-DQt5Core_DIR=${qt5.qtbase.dev}/lib/cmake/Qt5Core"
-    "-DBUILD_TYPE=Release"
   ];
 
   preConfigure = ''
     # Give ownership of the Galaxy S USB device to the logged in user.
     substituteInPlace heimdall/60-heimdall.rules --replace 'MODE="0666"' 'TAG+="uaccess"'
+
+    # Fix version string reported by the executable.
+    sed -i -e 's/version = "v.*"/version = "v${version}"/' heimdall/source/Interface.cpp
   '';
 
   installPhase = ''
@@ -36,9 +38,12 @@ stdenv.mkDerivation {
     cp ../heimdall/60-heimdall.rules $out/lib/udev/rules.d
   '';
 
+  enableParallelBuilding = true;
+
   meta = {
     homepage = "http://www.glassechidna.com.au/products/heimdall/";
     description = "A cross-platform tool suite to flash firmware onto Samsung Galaxy S devices";
     license = stdenv.lib.licenses.mit;
+    platforms = stdenv.lib.platforms.linux;
   };
 }

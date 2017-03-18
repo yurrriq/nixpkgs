@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
 
   postInstall = ''
     wrapProgram $out/bin/git-remote-hg \
-      --prefix PYTHONPATH : "$(echo ${mercurial}/lib/python*/site-packages):$(echo ${mercurial.python}/lib/python*/site-packages)${stdenv.lib.concatMapStrings (x: ":$(echo ${x}/lib/python*/site-packages)") mercurial.pythonPackages}"
+      --prefix PYTHONPATH : "$(echo ${mercurial}/lib/python*/site-packages):$(echo ${mercurial.python}/lib/python*/site-packages)${stdenv.lib.concatMapStrings (x: ":$(echo ${x}/lib/python*/site-packages)") mercurial.pythonPackages or []}"
   '';
 
   meta = with stdenv.lib; {
@@ -31,5 +31,6 @@ stdenv.mkDerivation rec {
     description = "Semi-official Mercurial bridge from Git project, once installed, it allows you to clone, fetch and push to and from Mercurial repositories as if they were Git ones";
     license = licenses.gpl2;
     maintainers = [ maintainers.garbas ];
+    platforms = platforms.unix;
   };
 }

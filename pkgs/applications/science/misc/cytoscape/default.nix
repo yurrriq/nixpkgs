@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
 
     ln -s $out/share/cytoscape.sh $out/bin/cytoscape
 
-    wrapProgram $out/share/gen_vmoptions.sh \
+    wrapProgram $out/share/cytoscape.sh \
       --set JAVA_HOME "${jre}" \
       --set JAVA  "${jre}/bin/java"
 
@@ -29,5 +29,6 @@ stdenv.mkDerivation rec {
     description = "A general platform for complex network analysis and visualization";
     license = stdenv.lib.licenses.lgpl21;
     maintainers = [stdenv.lib.maintainers.mimadrid];
+    platforms = stdenv.lib.platforms.unix;
   };
 }

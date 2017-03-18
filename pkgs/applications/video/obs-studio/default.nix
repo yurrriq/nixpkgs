@@ -9,6 +9,8 @@
 , libv4l
 , x264
 , curl
+, xorg
+, makeWrapper
 
 , alsaSupport ? false
 , alsaLib
@@ -20,14 +22,16 @@ let
   optional = stdenv.lib.optional;
 in stdenv.mkDerivation rec {
   name = "obs-studio-${version}";
-  version = "0.14.2";
+  version = "18.0.1";
 
   src = fetchFromGitHub {
     owner = "jp9000";
     repo = "obs-studio";
     rev = "${version}";
-    sha256 = "05yjm58d6daya1x6v8d73gx8fb20l0icay74nx0v4si2c898vm1j";
+    sha256 = "0mvjmkq5zlcppjqy18933w7r7rz1mpr2jpf8ipd0famdlgyacix6";
   };
+
+  patches = [ ./segfault-patch-systray.patch ];
 
   nativeBuildInputs = [ cmake
                       ];
@@ -40,6 +44,7 @@ in stdenv.mkDerivation rec {
                   qtbase
                   qtx11extras
                   x264
+                  makeWrapper
                 ]
                 ++ optional alsaSupport alsaLib
                 ++ optional pulseaudioSupport libpulseaudio;
@@ -48,6 +53,11 @@ in stdenv.mkDerivation rec {
   # DL_OPENGL is an explicit path. Not sure if there's a better way
   # to handle this.
   cmakeFlags = [ "-DCMAKE_CXX_FLAGS=-DDL_OPENGL=\\\"$(out)/lib/libobs-opengl.so\\\"" ];
+
+  postInstall = ''
+      wrapProgram $out/bin/obs \
+        --prefix "LD_LIBRARY_PATH" : "${xorg.libX11.out}/lib"
+  '';
 
   meta = with stdenv.lib; {
     description = "Free and open source software for video recording and live streaming";
@@ -59,5 +69,6 @@ in stdenv.mkDerivation rec {
     homepage = "https://obsproject.com";
     maintainers = with maintainers; [ jb55 ];
     license = licenses.gpl2;
+    platforms = with platforms; linux;
   };
 }

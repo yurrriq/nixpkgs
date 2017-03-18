@@ -22,7 +22,6 @@ in
       directDelivery = mkOption {
         type = types.bool;
         default = false;
-        example = true;
         description = ''
           Use the trivial Mail Transfer Agent (MTA)
           <command>ssmtp</command> package to allow programs to send
@@ -65,7 +64,6 @@ in
       useTLS = mkOption {
         type = types.bool;
         default = false;
-        example = true;
         description = ''
           Whether TLS should be used to connect to the default mail
           server.
@@ -75,7 +73,6 @@ in
       useSTARTTLS = mkOption {
         type = types.bool;
         default = false;
-        example = true;
         description = ''
           Whether the STARTTLS should be used to connect to the default
           mail server.  (This is needed for TLS-capable mail servers
@@ -100,6 +97,12 @@ in
           Password used for SMTP auth. (STORED PLAIN TEXT, WORLD-READABLE IN NIX STORE)
         '';
       };
+      
+      setSendmail = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to set the system sendmail to ssmtp's.";
+      };
 
     };
 
@@ -122,6 +125,13 @@ in
       '';
 
     environment.systemPackages = [pkgs.ssmtp];
+    
+    services.mail.sendmailSetuidWrapper = mkIf cfg.setSendmail {
+      program = "sendmail";
+      source = "${pkgs.ssmtp}/bin/sendmail";
+      setuid = false;
+      setgid = false;
+    };
 
   };
 

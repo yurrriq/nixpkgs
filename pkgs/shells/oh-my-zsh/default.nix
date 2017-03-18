@@ -1,19 +1,19 @@
 # This script was inspired by the ArchLinux User Repository package:
 #
 #   https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=oh-my-zsh-git
-
-
 { stdenv, fetchgit }:
 
 stdenv.mkDerivation rec {
-  name = "oh-my-zsh-git-${version}";
-  version = "2016-07-15";
+  version = "2017-02-27";
+  name = "oh-my-zsh-${version}";
 
   src = fetchgit {
     url = "https://github.com/robbyrussell/oh-my-zsh";
-    rev = "96a2092e377139fbcd95d7b7ac703b740daa22f6";
-    sha256 = "0v3hzpfj98mfz0y06qch2hf14iz0vpb9pfysw8hc4mnp0jzh5vz1";
+    rev = "b908feebcfb0ca8a9a80360d177e716c24c317d6";
+    sha256 = "0b7gir2llv5212nwh9arzva2p714s39qzgk385s9pmalhspfc6c1";
   };
+
+  pathsToLink = [ "/share/oh-my-zsh" ];
 
   phases = "installPhase";
 
@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
   chmod -R +w templates
 
   # Change the path to oh-my-zsh dir and disable auto-updating.
-  sed -i -e "2c\\ZSH=$outdir/" \
+  sed -i -e "s#ZSH=\$HOME/.oh-my-zsh#ZSH=$outdir#" \
          -e 's/\# \(DISABLE_AUTO_UPDATE="true"\)/\1/' \
    $template
 

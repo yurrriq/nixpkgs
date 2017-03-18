@@ -1,11 +1,11 @@
 {stdenv, fetchurl, unzip}:
 
 stdenv.mkDerivation rec {
-  version = "33";
+  version = "40";
   name = "android-support-repository-r${version}";
   src = fetchurl {
     url = "http://dl.google.com/android/repository/android_m2repository_r${version}.zip";
-    sha1 = "pdg5s78wypnc27fs5n62c8rrjl8gwyv4";
+    sha1 = "782e7233f18c890463e8602571d304e680ce354c";
   };
 
   buildCommand = ''

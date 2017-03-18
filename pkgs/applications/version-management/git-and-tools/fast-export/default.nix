@@ -26,7 +26,7 @@ stdenv.mkDerivation {
     mv *.py $l
     for p in $out/bin/*.sh; do
       wrapProgram $p \
-        --prefix PYTHONPATH : "$(echo ${mercurial}/lib/python*/site-packages):$(echo ${mercurial.python}/lib/python*/site-packages)${stdenv.lib.concatMapStrings (x: ":$(echo ${x}/lib/python*/site-packages)") mercurial.pythonPackages}" \
+        --prefix PYTHONPATH : "$(echo ${mercurial}/lib/python*/site-packages):$(echo ${mercurial.python}/lib/python*/site-packages)${stdenv.lib.concatMapStrings (x: ":$(echo ${x}/lib/python*/site-packages)") mercurial.pythonPackages or []}" \
         --prefix PATH : "$(dirname $(type -p python))":$l
     done
   '';
@@ -36,5 +36,6 @@ stdenv.mkDerivation {
     homepage = http://repo.or.cz/w/fast-export.git;
     license = licenses.gpl2;
     maintainers = [ maintainers.koral ];
+    platforms = stdenv.lib.platforms.unix;
   };
 }

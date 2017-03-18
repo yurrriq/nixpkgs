@@ -51,12 +51,6 @@ in
         description = "Logging verbosity level.";
       };
 
-      watchdogTimeout = mkOption {
-        type = types.int;
-        default = 10;
-        description = "Set watchdog timeout value in seconds.";
-      };
-
       filterWorkers = mkOption {
         type = types.int;
         default = 1;
@@ -69,7 +63,7 @@ in
         description = "Enable the logstash web interface.";
       };
 
-      address = mkOption {
+      listenAddress = mkOption {
         type = types.str;
         default = "0.0.0.0";
         description = "Address on which to start webserver.";
@@ -83,7 +77,7 @@ in
 
       inputConfig = mkOption {
         type = types.lines;
-        default = ''stdin { type => "example" }'';
+        default = ''generator { }'';
         description = "Logstash input configuration.";
         example = ''
           # Read from journal
@@ -96,7 +90,7 @@ in
 
       filterConfig = mkOption {
         type = types.lines;
-        default = ''noop {}'';
+        default = "";
         description = "logstash filter configuration.";
         example = ''
           if [type] == "syslog" {
@@ -114,11 +108,11 @@ in
 
       outputConfig = mkOption {
         type = types.lines;
-        default = ''stdout { debug => true debug_format => "json"}'';
+        default = ''stdout { codec => rubydebug }'';
         description = "Logstash output configuration.";
         example = ''
-          redis { host => "localhost" data_type => "list" key => "logstash" codec => json }
-          elasticsearch { embedded => true }
+          redis { host => ["localhost"] data_type => "list" key => "logstash" codec => json }
+          elasticsearch { }
         '';
       };
 
@@ -140,7 +134,6 @@ in
           "-w ${toString cfg.filterWorkers} " +
           ops havePluginPath "--pluginpath ${pluginPath} " +
           "${verbosityFlag} " +
-          "--watchdog-timeout ${toString cfg.watchdogTimeout} " +
           "-f ${writeText "logstash.conf" ''
             input {
               ${cfg.inputConfig}
@@ -154,7 +147,7 @@ in
               ${cfg.outputConfig}
             }
           ''} " +
-          ops cfg.enableWeb "-- web -a ${cfg.address} -p ${cfg.port}";
+          ops cfg.enableWeb "-- web -a ${cfg.listenAddress} -p ${cfg.port}";
       };
     };
   };

@@ -1,16 +1,17 @@
-{ stdenv, fetchgit, go }:
+{ stdenv, lib, fetchFromGitHub, go, pkgs, removeReferencesTo }:
 
 stdenv.mkDerivation rec {
-  version = "0.14.0";
+  version = "0.14.24";
   name = "syncthing-${version}";
 
-  src = fetchgit {
-    url = https://github.com/syncthing/syncthing;
-    rev = "refs/tags/v${version}";
-    sha256 = "15l3q3r6i3q95i474winswx4y149b5ic7xhpnj52s78fxd4va2q2";
+  src = fetchFromGitHub {
+    owner  = "syncthing";
+    repo   = "syncthing";
+    rev    = "v${version}";
+    sha256 = "15jjk49ibry7crc3sw5zg09zsm5ir0ph5c0f3acas66wd02rnvl1";
   };
 
-  buildInputs = [ go ];
+  buildInputs = [ go removeReferencesTo ];
 
   buildPhase = ''
     mkdir -p src/github.com/syncthing
@@ -24,15 +25,32 @@ stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
-    mkdir -p $out/bin
+    mkdir -p $out/bin $out/etc/systemd/{system,user}
+
     cp bin/* $out/bin
+  '' + lib.optionalString (stdenv.isLinux) ''
+    substitute etc/linux-systemd/system/syncthing-resume.service \
+               $out/etc/systemd/system/syncthing-resume.service \
+               --replace /usr/bin/pkill ${pkgs.procps}/bin/pkill
+
+    substitute etc/linux-systemd/system/syncthing@.service \
+               $out/etc/systemd/system/syncthing@.service \
+               --replace /usr/bin/syncthing $out/bin/syncthing
+
+    substitute etc/linux-systemd/user/syncthing.service \
+               $out/etc/systemd/user/syncthing.service \
+               --replace /usr/bin/syncthing $out/bin/syncthing
   '';
 
-  meta = {
+  preFixup = ''
+    find $out/bin -type f -exec remove-references-to -t ${go} '{}' '+'
+  '';
+
+  meta = with stdenv.lib; {
     homepage = https://www.syncthing.net/;
     description = "Open Source Continuous File Synchronization";
-    license = stdenv.lib.licenses.mpl20;
-    maintainers = with stdenv.lib.maintainers; [pshendry];
-    platforms = with stdenv.lib.platforms; linux ++ freebsd ++ openbsd ++ netbsd;
+    license = licenses.mpl20;
+    maintainers = with maintainers; [ pshendry joko peterhoeg ];
+    platforms = platforms.unix;
   };
 }
