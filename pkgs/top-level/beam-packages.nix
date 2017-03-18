@@ -48,5 +48,19 @@ rec {
       interpreterConfig = lib.overrideElixir ../development/interpreters/elixir/1.3.1.nix;
     };
 
+    elixir142 = callPackage ../development/beam-modules {
+      erlang = interpreter.erlangR18;
+      interpreterConfig = lib.overrideElixir ../development/interpreters/elixir/1.4.2.nix;
+    };
+
+    elixir142_R19 = callPackage ../development/beam-modules {
+      erlang = interpreter.erlangR19;
+      interpreterConfig = lib.overrideElixir ../development/interpreters/elixir/1.4.2.nix;
+    };
+
+    lfe = callPackage ../development/beam-modules {
+      erlang = interpreter.erlangR19;
+    };
+
   };
 }

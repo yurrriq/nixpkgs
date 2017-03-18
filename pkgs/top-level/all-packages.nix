@@ -5681,7 +5681,9 @@ with pkgs;
   rebar = beamPackages.rebar;
   rebar3 = beamPackages.rebar3;
 
-  elixir = beam.packages.elixir131.elixir;
+  elixir = beam.packages.elixir142.elixir;
+
+  lfe = beam.packages.lfe;
 
   hexRegistrySnapshot = callPackage ../development/beam-modules/hex-registry-snapshot.nix { };
   fetchHex = callPackage ../development/beam-modules/fetch-hex.nix { };
@@ -5752,7 +5754,7 @@ with pkgs;
 
   # elixir = callPackage ../development/interpreters/elixir { debugInfo = true; };
 
-  lfe = callPackage ../development/interpreters/lfe { };
+  # lfe = callPackage ../development/interpreters/lfe { };
 
   groovy = callPackage ../development/interpreters/groovy { };
 

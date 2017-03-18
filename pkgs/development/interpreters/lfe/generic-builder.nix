@@ -1,7 +1,18 @@
-{ stdenv, fetchFromGitHub, erlang, makeWrapper, coreutils, bash, beamPackages }:
+{ stdenv, fetchFromGitHub, makeWrapper, coreutils, bash
+, erlang, buildHex, buildRebar3 }:
+
+{ version
+, sha256 ? null
+, src ? fetchFromGitHub {
+    owner = "rvirding";
+    repo = "lfe";
+    rev = version;
+    inherit sha256;
+  }
+}:
 
 let
-  inherit (beamPackages) buildRebar3 buildHex;
+
   proper = buildHex rec {
     name    = "proper";
     version = "1.1.1-beta";
@@ -11,17 +22,13 @@ let
       ${erlang}/bin/escript write_compile_flags include/compile_flags.hrl
     '';
   };
+
 in
+
 buildRebar3 rec {
   name    = "lfe";
-  version = "1.2.1";
 
-  src = fetchFromGitHub {
-    owner  = "rvirding";
-    repo   = name;
-    rev    = version;
-    sha256 = "0j5gjlsk92y14kxgvd80q9vwyhmjkphpzadcswyjxikgahwg1avz";
-  };
+  inherit src version;
 
   buildInputs = [ makeWrapper ];
   beamDeps    = [ proper ];
@@ -53,7 +60,8 @@ buildRebar3 rec {
     # Add some stuff to PATH so the scripts can run without problems.
     for f in $out/bin/*; do
       wrapProgram $f \
-        --prefix PATH ":" "${stdenv.lib.makeBinPath [ erlang coreutils bash ]}:$out/bin"
+        --prefix PATH ":" \
+                 "${stdenv.lib.makeBinPath [ erlang coreutils bash ]}:$out/bin"
       substituteInPlace $f --replace "/usr/bin/env" "${coreutils}/bin/env"
     done
   '';
