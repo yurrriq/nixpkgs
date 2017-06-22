@@ -137,7 +137,8 @@ $ nix-env -f &quot;&lt;nixpkgs&gt;&quot; -iA beamPackages.ibrowse
   </programlisting>
   <para>
     The attribute path of any BEAM package corresponds to the name of that
-    particular package in <link xlink:href="https://hex.pm">Hex</link> or its OTP Application/Release name.
+    particular package in <link xlink:href="https://hex.pm">Hex</link> or its
+    OTP Application/Release name.
   </para>
 </section>
 <section xml:id="packaging-beam-applications">
@@ -173,9 +174,10 @@ $ nix-env -f &quot;&lt;nixpkgs&gt;&quot; -iA beamPackages.ibrowse
       </programlisting>
       <para>
         Such derivations are callable with
-        <literal>beam.packages.erlang.callPackage</literal> (see <xref linkend="erlang-call-package"/>). To call
-        this package using the normal <literal>callPackage</literal>, refer to
-        dependency packages via <literal>beamPackages</literal>, e.g.
+        <literal>beam.packages.erlang.callPackage</literal> (see <xref
+        linkend="erlang-call-package"/>). To call this package using the normal
+        <literal>callPackage</literal>, refer to dependency packages via
+        <literal>beamPackages</literal>, e.g.
         <literal>beamPackages.ibrowse</literal>.
       </para>
       <para>
@@ -430,8 +432,9 @@ analyze: build plt
 
     </programlisting>
     <para>
-      Using a <literal>shell.nix</literal> as described (see <xref linkend="creating-a-shell"/>) should just work. Aside
-      from <literal>test</literal>, <literal>plt</literal>, and
+      Using a <literal>shell.nix</literal> as described (see <xref
+      linkend="creating-a-shell"/>) should just work. Aside from
+      <literal>test</literal>, <literal>plt</literal>, and
       <literal>analyze</literal>, the Make targets work just fine for all of the
       build derivations.
     </para>
@@ -441,17 +444,21 @@ analyze: build plt
 <section xml:id="generating-packages-from-hex-with-hex2nix">
   <title>Generating Packages from Hex with <literal>hex2nix</literal></title>
   <para>
-    Updating the <link xlink:href="https://hex.pm">Hex</link> package set requires <link xlink:href="https://github.com/erlang-nix/hex2nix">hex2nix</link>. Given the
+    Updating the <link xlink:href="https://hex.pm">Hex</link> package set
+    requires <link
+    xlink:href="https://github.com/erlang-nix/hex2nix">hex2nix</link>. Given the
     path to the Erlang modules (usually
     <literal>pkgs/development/erlang-modules</literal>), it will dump a file
     called <literal>hex-packages.nix</literal>, containing all the packages that
-    use a recognized build system in <link xlink:href="https://hex.pm">Hex</link>. It can't be determined, however,
+    use a recognized build system in <link
+    xlink:href="https://hex.pm">Hex</link>. It can't be determined, however,
     whether every package is buildable.
     </para>
     <para>
-      To make life easier for our users, try to build every <link xlink:href="https://hex.pm">Hex</link> package and
-      remove those that fail. To do that, simply run the following command in
-      the root of your <literal>nixpkgs</literal> repository:
+      To make life easier for our users, try to build every <link
+      xlink:href="https://hex.pm">Hex</link> package and remove those that fail.
+      To do that, simply run the following command in the root of your
+      <literal>nixpkgs</literal> repository:
     </para>
     <programlisting>
 $ nix-build -A beamPackages
@@ -459,8 +466,9 @@ $ nix-build -A beamPackages
     <para>
       That will attempt to build every package in
       <literal>beamPackages</literal>. Then manually remove those that fail.
-      Hopefully, someone will improve <link xlink:href="https://github.com/erlang-nix/hex2nix">hex2nix</link> in the future
-      to automate the process.
+      Hopefully, someone will improve <link
+      xlink:href="https://github.com/erlang-nix/hex2nix">hex2nix</link> in the
+      future to automate the process.
     </para>
 </section>
 </section>
