@@ -7,9 +7,9 @@
     <title>Introduction</title>
     <para>
       In this document and related Nix expressions we use the term
-      <emphasis>Beam</emphasis> to describe the environment. BEAM is
+      <emphasis>BEAM</emphasis> to describe the environment. BEAM is
       the name of the Erlang Virtual Machine and, as far as we know,
-      from a packaging perspective all languages that run on BEAM are
+      from a packaging perspective all languages that run on the BEAM are
       interchangeable. The things that do change, like the build
       system, are transparent to the users of the package. So we make
       no distinction.
@@ -18,14 +18,14 @@
   <section xml:id="beam-structure">
     <title>Structure</title>
     <para>
-      All Beam-related things are available via top-level
+      All BEAM-related things are available via top-level
       <literal>beam</literal> attribute, which includes:
     </para>
     <itemizedlist>
       <listitem>
         <para>
           <literal>interpreters</literal>: contains a set of compilers running
-          on Beam, including multiple Erlang/OTP versions
+          on the BEAM, including multiple Erlang/OTP versions
           (<literal>beam.interpreters.erlangR19</literal>, etc), Elixir
           (<literal>beam.interpreters.elixir</literal>) and LFE
           (<literal>beam.interpreters.lfe</literal>).
@@ -42,7 +42,7 @@
     <para>
       Default Erlang compiler is defined by
       <literal>beam.interpreters.erlang</literal> and aliased as
-      <literal>erlang</literal>. Default package set with Beam packages is
+      <literal>erlang</literal>. Default package set with BEAM packages is
       defined by <literal>beam.packages.erlang</literal> and aliased at
       top-level as <literal>beamPackages</literal>.
     </para>
@@ -61,7 +61,7 @@
     </para>
     <para>
       We also provide <literal>beam.packages.erlang.callPackage</literal>, which
-      simplifies writing Beam package definitions, by injecting all packages from
+      simplifies writing BEAM package definitions, by injecting all packages from
       <literal>beam.packages.erlang</literal> into top-level context.
     </para>
   </section>
@@ -97,7 +97,7 @@
 <section xml:id="how-to-install-beam-packages">
   <title>How to Install BEAM Packages</title>
   <para>
-    Beam packages are not registered in the top level simply because they are
+    BEAM packages are not registered in the top level simply because they are
     not relevant to the vast majority of Nix users. They are installable using
     the <literal>beam.packages.erlang</literal> attribute set and aliased as
     <literal>beamPackages</literal>. This attribute points at packages built by
@@ -126,7 +126,7 @@ beamPackages.rebar3-pc  pc-1.1.0
 $ nix-env -f &quot;&lt;nixpkgs&gt;&quot; -iA beamPackages.ibrowse
   </programlisting>
   <para>
-    The attribute path of any Beam packages corresponds to the name
+    The attribute path of any BEAM packages corresponds to the name
     of that particular package in Hex or its OTP Application/Release name.
   </para>
 </section>
@@ -174,7 +174,7 @@ $ nix-env -f &quot;&lt;nixpkgs&gt;&quot; -iA beamPackages.ibrowse
         The only visible difference between this derivation and
         something like <literal>stdenv.mkDerivation</literal> is that we
         have added <literal>beamDeps</literal> to the derivation. If
-        you add your Beam dependencies here they will be correctly
+        you add your BEAM dependencies here they will be correctly
         handled by the system.
       </para>
       <para>
