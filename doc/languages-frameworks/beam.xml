@@ -2,7 +2,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          xml:id="sec-beam">
 
-  <title>Beam Languages (Erlang, Elixir &amp; LFE)</title>
+  <title>BEAM Languages (Erlang, Elixir &amp; LFE)</title>
   <section xml:id="beam-introduction">
     <title>Introduction</title>
     <para>
@@ -95,7 +95,7 @@
 </section>
 
 <section xml:id="how-to-install-beam-packages">
-  <title>How to install Beam packages</title>
+  <title>How to Install BEAM Packages</title>
   <para>
     Beam packages are not registered in the top level simply because they are
     not relevant to the vast majority of Nix users. They are installable using
@@ -131,7 +131,7 @@ $ nix-env -f &quot;&lt;nixpkgs&gt;&quot; -iA beamPackages.ibrowse
   </para>
 </section>
 <section xml:id="packaging-beam-applications">
-  <title>Packaging Beam Applications</title>
+  <title>Packaging BEAM Applications</title>
   <section  xml:id="packaging-erlang-applications">
     <title>Erlang Applications</title>
     <section xml:id="rebar3-packages">
@@ -265,7 +265,7 @@ $ nix-env -f &quot;&lt;nixpkgs&gt;&quot; -iA beamPackages.ibrowse
   </section>
 </section>
 <section xml:id="how-to-develop">
-  <title>How to develop</title>
+  <title>How to Develop</title>
   <section xml:id="accessing-an-environment">
     <title>Accessing an Environment</title>
     <para>
@@ -352,7 +352,7 @@ in
  drv
     </programlisting>
     <section xml:id="building-in-a-shell">
-    <title>Building in a shell (for mix projects)</title>
+    <title>Building in a Shell (for Mix Projects)</title>
     <para>
       We can leverage the support of the Derivation, regardless of
       which build Derivation is called by calling the commands themselves.
@@ -425,7 +425,7 @@ analyze: build plt
 </section>
 </section>
 <section xml:id="generating-packages-from-hex-with-hex2nix">
-  <title>Generating Packages from Hex with Hex2Nix</title>
+  <title>Generating Packages from Hex with <literal>hex2nix</literal></title>
   <para>
     Updating the Hex packages requires the use of the
     <literal>hex2nix</literal> tool. Given the path to the Erlang
