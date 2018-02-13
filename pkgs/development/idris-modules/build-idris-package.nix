@@ -8,16 +8,18 @@
   , extraBuildInputs ? []
   , postUnpack ? ""
   , doCheck ? true
+  , pkgName ? "*.ipkg"
+  , testPkgName ? "*.ipkg"
   }:
+
 let
   idris-with-packages = idrisPackages.with-packages idrisDeps;
 in
-stdenv.mkDerivation ({
 
+stdenv.mkDerivation {
   name = "${name}-${version}";
 
-  inherit postUnpack src doCheck meta;
-
+  inherit version postUnpack src doCheck meta;
 
   # Some packages use the style
   # opts = -i ../../path/to/package
@@ -27,20 +29,20 @@ stdenv.mkDerivation ({
   '';
 
   buildPhase = ''
-    ${idris-with-packages}/bin/idris --build *.ipkg
+    ${idris-with-packages}/bin/idris --build ${pkgName};
   '';
 
   checkPhase = ''
-    if grep -q test *.ipkg; then
-      ${idris-with-packages}/bin/idris --testpkg *.ipkg
+    if grep -q test ${testPkgName}; then
+      ${idris-with-packages}/bin/idris --testpkg ${testPkgName};
     fi
   '';
 
   installPhase = ''
-    ${idris-with-packages}/bin/idris --install *.ipkg --ibcsubdir $out/libs
+    ${idris-with-packages}/bin/idris --install ${pkgName} --ibcsubdir $out/libs
   '';
 
   buildInputs = [ gmp ] ++ extraBuildInputs;
 
   propagatedBuildInputs = idrisDeps;
-})
+}
