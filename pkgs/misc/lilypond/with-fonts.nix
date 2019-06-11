@@ -4,9 +4,9 @@
 }:
 
 stdenv.lib.appendToName "with-fonts" (symlinkJoin {
-  inherit (lilypond) meta name version ;
+  inherit (lilypond) meta name version;
 
-  paths = [ lilypond ];
+  paths = [ lilypond ] ++ fonts;
 
   buildInputs = [ makeWrapper lndir ];
 
