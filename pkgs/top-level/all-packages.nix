@@ -23326,10 +23326,6 @@ in
 
   lilypond-unstable = callPackage ../misc/lilypond/unstable.nix { };
 
-  lilypond-with-fonts = callPackage ../misc/lilypond/with-fonts.nix {
-    lilypond = lilypond-unstable;
-  };
-
   openlilylib-fonts = callPackage ../misc/lilypond/fonts.nix {
     lilypond = lilypond-unstable;
   };
