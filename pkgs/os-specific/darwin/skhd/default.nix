@@ -1,17 +1,17 @@
-{ stdenv, fetchFromGitHub, Carbon }:
+{ stdenv, fetchFromGitHub, Carbon, CoreAudio }:
 
 stdenv.mkDerivation rec {
   name = "skhd-${version}";
-  version = "0.3.0";
+  version = "0.3.4";
 
   src = fetchFromGitHub {
     owner = "koekeishiya";
     repo = "skhd";
     rev = "v${version}";
-    sha256 = "13pqnassmzppy2ipv995rh8lzw9rraxvi0ph6zgy63cbsdfzbhgl";
+    sha256 = "0y14a3zfxz02vsai9bmf0021xv0h78ns6r2w6ccpy1p18vdph8qh";
   };
 
-  buildInputs = [ Carbon ];
+  buildInputs = [ Carbon CoreAudio ];
 
   makeFlags = [ "BUILD_PATH=$(out)/bin" ];
 
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
     description = "Simple hotkey daemon for macOS";
     homepage = https://github.com/koekeishiya/skhd;
     platforms = platforms.darwin;
-    maintainers = with maintainers; [ lnl7 periklis ];
+    maintainers = with maintainers; [ lnl7 periklis rvolosatovs yurrriq ];
     license = licenses.mit;
   };
 }
