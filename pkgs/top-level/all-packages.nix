@@ -40561,6 +40561,8 @@ with pkgs;
 
   openlilylib-fonts = callPackage ../misc/lilypond/fonts.nix { };
 
+  lilypondPackages = callPackage ../misc/lilypond/packages { };
+
   loop = callPackage ../tools/misc/loop { };
 
   mailcore2 = callPackage ../development/libraries/mailcore2 {
